@@ -1,0 +1,9 @@
+node_modules/
+dist/
+source-media/
+
+*.log
+vite-dev*.log
+
+.DS_Store
+Thumbs.db
