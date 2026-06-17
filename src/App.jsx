@@ -40,7 +40,7 @@ const projectFilters = [
   { id: 'aigc', label: 'AIGC' },
 ];
 
-const videoPath = (name) => `/assets/videos/optimized/${name}`;
+const videoPath = (name) => `${import.meta.env.BASE_URL}assets/videos/optimized/${name}`;
 
 const projects = [
   {
