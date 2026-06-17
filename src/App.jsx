@@ -41,6 +41,7 @@ const projectFilters = [
 ];
 
 const videoPath = (name) => `${import.meta.env.BASE_URL}assets/videos/optimized/${name}`;
+const posterPath = (name) => `${import.meta.env.BASE_URL}assets/posters/${name.replace(/\.mp4$/, '.webp')}`;
 
 const projects = [
   {
@@ -203,7 +204,7 @@ const specialties = [
   },
 ];
 
-function ProjectPreview({ src, title }) {
+function ProjectPreview({ poster, src, title }) {
   const videoRef = useRef(null);
   const [isActive, setIsActive] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
@@ -221,8 +222,8 @@ function ProjectPreview({ src, title }) {
         setIsActive(nearViewport);
       },
       {
-        rootMargin: '420px 0px',
-        threshold: 0.01,
+        rootMargin: '120px 0px',
+        threshold: 0.18,
       },
     );
 
@@ -255,6 +256,7 @@ function ProjectPreview({ src, title }) {
   return (
     <video
       ref={videoRef}
+      poster={poster}
       src={shouldLoad ? src : undefined}
       muted
       loop
@@ -533,6 +535,7 @@ function App() {
         <section className="hero" aria-label="首页 Hero">
           <video
             className="hero-video"
+            poster={posterPath('hero_showreel.mp4')}
             src={videoPath('hero_showreel.mp4')}
             autoPlay
             muted
@@ -715,7 +718,7 @@ function App() {
                   glowRadius={38}
                 >
                   <div className="project-media">
-                    <ProjectPreview src={project.video} title={project.title} />
+                    <ProjectPreview poster={posterPath(project.video.split('/').pop())} src={project.video} title={project.title} />
                     <span className="play-chip">
                       <MonitorPlay size={16} />
                       Loop Preview
