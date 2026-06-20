@@ -407,6 +407,7 @@ button {
 .portrait-frame {
   position: relative;
   display: grid;
+  aspect-ratio: 3 / 5;
   min-height: 660px;
   place-items: center;
   overflow: hidden;
