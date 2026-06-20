@@ -597,12 +597,25 @@ function App() {
           <p className="section-kicker" aria-hidden="true">PROFILE</p>
           <div className="section-inner profile-grid">
             <div className="portrait-frame" aria-label="人物图占位">
+              <video
+                className="portrait-video"
+                poster={posterPath('portrait_motion.mp4')}
+                src={videoPath('portrait_motion.mp4')}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
               <div className="portrait-lines">
                 <span />
                 <span />
                 <span />
               </div>
-              <p>Portrait<br />Pending Upload</p>
+              <div className="portrait-caption">
+                <span>HAWEO</span>
+                <strong>Motion Portrait</strong>
+              </div>
             </div>
 
             <div className="profile-content">

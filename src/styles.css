@@ -417,9 +417,31 @@ button {
   will-change: clip-path, transform;
 }
 
+.portrait-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.86) contrast(1.08);
+  transform: scale(1.01);
+}
+
+.portrait-frame::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(5, 8, 7, 0.04), rgba(5, 8, 7, 0.58)),
+    linear-gradient(90deg, rgba(5, 8, 7, 0.28), transparent 42%, rgba(5, 8, 7, 0.2));
+  content: "";
+  pointer-events: none;
+}
+
 .portrait-frame::after {
   position: absolute;
   inset: 28px;
+  z-index: 2;
   border: 1px solid rgba(255, 255, 255, 0.12);
   content: "";
 }
@@ -427,24 +449,42 @@ button {
 .portrait-lines {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  opacity: 0.36;
+  opacity: 0.22;
+  pointer-events: none;
 }
 
 .portrait-lines span {
   border-right: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.portrait-frame p {
-  position: relative;
-  z-index: 2;
-  color: rgba(241, 244, 238, 0.52);
-  font-size: 13px;
+.portrait-caption {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 28px;
+  z-index: 3;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.portrait-caption span {
+  color: var(--teal);
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.2em;
-  line-height: 1.8;
-  text-align: center;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.portrait-caption strong {
+  color: rgba(241, 244, 238, 0.82);
+  font-size: 12px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
