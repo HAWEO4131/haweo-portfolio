@@ -1,6 +1,7 @@
 import {
   ArrowRight,
   Box,
+  CheckCircle2,
   CircuitBoard,
   Mail,
   MapPin,
@@ -11,25 +12,23 @@ import {
   Workflow,
   Zap,
 } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import BorderGlow from './BorderGlow.jsx';
 import ClickSpark from './ClickSpark.jsx';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const navItems = [
-  { label: '优势', href: '#specialties' },
-  { label: '项目', href: '#works' },
+  { label: '定位', href: '#profile' },
+  { label: '能力', href: '#specialties' },
+  { label: '案例', href: '#case-studies' },
+  { label: '作品', href: '#works' },
   { label: '联系', href: '#contact' },
 ];
 
 const metrics = [
-  { value: '10', suffix: '年', label: '商业视觉经验' },
-  { value: '76+', suffix: '', label: '落地项目经验丰富' },
-  { value: '14K', suffix: '', label: '超高分辨率展厅交付' },
-  { value: '1200万+', suffix: '', label: '线下大屏覆盖人流' },
+  { value: '10', suffix: '年', label: '商业视觉与三维动画经验' },
+  { value: '76+', suffix: '', label: '产品、展厅、大屏项目落地' },
+  { value: '14K', suffix: '', label: '超高分辨率展厅交付经验' },
+  { value: 'AI+3D', suffix: '', label: 'AIGC 提案与三维制作结合' },
 ];
 
 const projectFilters = [
@@ -43,13 +42,56 @@ const projectFilters = [
 const videoPath = (name) => `${import.meta.env.BASE_URL}assets/videos/optimized/${name}`;
 const posterPath = (name) => `${import.meta.env.BASE_URL}assets/posters/${name.replace(/\.mp4$/, '.webp')}`;
 
+const serviceTypes = [
+  '产品发布三维动画',
+  '汽车 / 工业产品演示',
+  '展厅大屏循环视觉',
+  '裸眼 3D / 异形屏适配',
+  'AIGC 概念短片与提案预演',
+];
+
+const projectStages = [
+  { step: '01', title: '需求拆解', text: '确认用途、受众、播放场景、规格、周期和预算，先把项目边界讲清楚。' },
+  { step: '02', title: '分镜与风格', text: '把产品卖点、镜头节奏、视觉参考和可实现路径整理成清晰方案。' },
+  { step: '03', title: '三维 / AIGC 制作', text: '完成资产整理、镜头动画、材质灯光、特效合成与必要的 AI 视觉探索。' },
+  { step: '04', title: '交付适配', text: '按官网、发布会、展厅、超宽屏或裸眼 3D 场景输出可直接使用的版本。' },
+];
+
+const caseStudies = [
+  {
+    title: '产品动画：GUB 骑行眼镜',
+    tag: 'Product Launch',
+    video: videoPath('product_gub_glasses.mp4'),
+    challenge: '运动类产品需要在短时间里讲清结构、材质和科技感，不能只靠静态图。',
+    role: '负责三维资产整理、材质灯光、镜头动画、字幕包装与最终成片输出。',
+    outcome: '把产品卖点转化为 30 秒内可理解的视觉表达，适合电商、发布和品牌展示复用。',
+  },
+  {
+    title: '展厅视觉：裸眼 3D 与超宽屏内容',
+    tag: 'Exhibition Screen',
+    video: videoPath('naked_eye_cube.mp4'),
+    challenge: '大屏项目不仅要好看，还要考虑比例、出屏关系、循环播放和现场观看距离。',
+    role: '参与视觉资产、镜头运动、屏幕比例适配与高规格文件交付。',
+    outcome: '让三维内容可以在展厅、商业大屏或异形屏里稳定播放，而不是停留在概念预览。',
+  },
+  {
+    title: 'AIGC 提案：汽车概念镜头',
+    tag: 'AI Concept',
+    video: videoPath('aigc_mazda.mp4'),
+    challenge: '提案阶段需要快速验证氛围、镜头语言和风格方向，传统全流程成本较高。',
+    role: '用 AIGC 快速生成概念镜头，结合剪辑节奏和三维审美判断完成提案预演。',
+    outcome: '帮助项目在早期更快看见方向，降低试错成本，并为后续三维精制提供参考。',
+  },
+];
+
 const projects = [
   {
     title: '综合作品快闪',
     type: 'Showreel',
     category: 'screen',
     video: videoPath('hero_showreel.mp4'),
-    summary: '作为首页主视觉，快速建立整体调性和作品广度。',
+    summary: '快速展示产品动画、展厅视觉、AIGC 与 VFX 大屏方向，适合作为初步能力概览。',
+    value: '让客户在一分钟内理解整体风格、项目跨度和交付能力。',
     featured: true,
   },
   {
@@ -57,112 +99,128 @@ const projects = [
     type: 'Tech Product',
     category: 'product',
     video: videoPath('tech_chip.mp4'),
-    summary: '使用你新整理的科技产品素材，突出结构、灯光和品牌科技感。',
+    summary: '围绕科技硬件的结构、光效、材质和品牌感建立高质感产品镜头。',
+    value: '适合发布会、官网首屏、产品解释和科技品牌提案。',
   },
   {
     title: 'GUB 骑行眼镜产品动画',
     type: 'Product Animation',
     category: 'product',
     video: videoPath('product_gub_glasses.mp4'),
-    summary: '运动眼镜类产品动画，突出产品结构、镜片质感与科技运动调性。',
+    summary: '通过材质灯光、镜头运动和功能细节，把产品从静态图转化为可传播内容。',
+    value: '适合电商、社媒短片、新品发布和招商展示。',
   },
   {
     title: '工业产品动画',
     type: 'Industrial',
     category: 'auto',
     video: videoPath('industrial_product.mp4'),
-    summary: '工业类产品的结构展示、运动逻辑和整体质感表达。',
+    summary: '强调结构关系、机械运动逻辑和工业产品的可靠质感。',
+    value: '适合设备演示、技术说明、展会循环播放和 B 端销售材料。',
   },
   {
     title: 'AMG 发动机舱渲染',
     type: 'Automotive',
     category: 'auto',
     video: videoPath('amg_engine.mp4'),
-    summary: '偏结构展示和机械质感的汽车细节镜头。',
+    summary: '用细节镜头强化机械结构、金属质感和汽车性能氛围。',
+    value: '适合汽车品牌视觉、局部功能展示和高质感短片片段。',
   },
   {
     title: 'Porsche 汽车渲染',
     type: 'Automotive',
     category: 'auto',
     video: videoPath('porsche_render.mp4'),
-    summary: '高质感汽车产品渲染，强调灯光、曲面和材质控制。',
+    summary: '控制曲面反射、灯光层次和镜头节奏，呈现高端汽车产品质感。',
+    value: '适合汽车类视觉提案、广告分镜预演和产品氛围片。',
   },
   {
     title: 'Porsche 汽车渲染二',
     type: 'Automotive',
     category: 'auto',
     video: videoPath('porsche_render_2.mp4'),
-    summary: '延续同系列调性，展示更多镜头节奏和车身细节。',
+    summary: '延续同系列视觉语言，补充更多车身角度和细节表达。',
+    value: '可作为汽车项目作品集的系列化展示素材。',
   },
   {
     title: 'Porsche 汽车渲染三',
     type: 'Automotive',
     category: 'auto',
     video: videoPath('porsche_render_3.mp4'),
-    summary: '同系列补充镜头，更适合整体展示汽车类方向。',
+    summary: '以稳定的汽车渲染调性展示镜头组织和材质控制。',
+    value: '适合补充汽车方向的风格证明。',
   },
   {
     title: '裸眼 3D 魔方屏幕',
     type: 'Naked-eye 3D',
     category: 'screen',
     video: videoPath('naked_eye_cube.mp4'),
-    summary: '适合大屏、展厅和异形视觉的裸眼 3D 表达。',
+    summary: '围绕出屏错觉、节奏卡点和大屏观看距离设计视觉内容。',
+    value: '适合商场大屏、展厅入口、活动现场和异形屏展示。',
   },
   {
     title: '展厅循环素材',
     type: 'Exhibition Visual',
     category: 'screen',
     video: videoPath('exhibit_loop.mp4'),
-    summary: '展厅循环主视觉，偏稳重、克制的沉浸式氛围。',
+    summary: '为展厅持续播放场景制作稳定、耐看的循环主视觉。',
+    value: '适合企业展厅、科技馆、发布会候场和沉浸空间。',
   },
   {
     title: '展厅 VFX 素材',
     type: 'Exhibition Visual',
     category: 'screen',
     video: videoPath('exhibit_vfx.mp4'),
-    summary: '适合展厅与发布场景的视觉补充内容。',
+    summary: '用粒子、光效和运动节奏补充品牌空间的视觉层次。',
+    value: '适合作为主视觉过场、开场包装或大屏背景。',
   },
   {
     title: '展厅抽象粒子 Logo',
     type: 'Exhibition Visual',
     category: 'screen',
     video: videoPath('exhibit_particle_logo.mp4'),
-    summary: '粒子与品牌识别结合的过场视觉。',
+    summary: '把品牌识别和粒子动态结合，形成空间里的记忆点。',
+    value: '适合品牌露出、展厅片头和活动视觉转场。',
   },
   {
     title: '展厅粒子万花筒',
     type: 'Exhibition Visual',
     category: 'screen',
     video: videoPath('exhibit_kaleidoscope.mp4'),
-    summary: '更偏抽象节奏与空间氛围的视觉内容。',
+    summary: '偏抽象节奏与沉浸氛围的循环视觉内容。',
+    value: '适合空间氛围、夜场屏幕和视觉背景。',
   },
   {
     title: '包装片头',
     type: 'Motion Package',
     category: 'screen',
     video: videoPath('package_opening.mp4'),
-    summary: '栏目或项目包装方向，偏开场和品牌氛围塑造。',
+    summary: '面向栏目、活动或项目开场的动态图形包装。',
+    value: '适合作为片头、品牌开场和项目视觉统一包装。',
   },
   {
     title: 'AIGC 越野车 V27',
     type: 'AIGC Motion',
     category: 'aigc',
     video: videoPath('aigc_offroad.mp4'),
-    summary: 'AIGC 汽车概念方向，用于快速验证调性和镜头语言。',
+    summary: '用 AI 快速验证汽车概念的环境、氛围和镜头语言。',
+    value: '适合提案阶段快速出方向，降低前期试错成本。',
   },
   {
     title: 'AIGC 马自达概念车',
     type: 'AIGC Motion',
     category: 'aigc',
     video: videoPath('aigc_mazda.mp4'),
-    summary: '概念车表达，适合提案和风格稿阶段。',
+    summary: '以 AIGC 镜头探索汽车品牌调性和叙事节奏。',
+    value: '适合概念预演、风格稿和客户沟通材料。',
   },
   {
     title: 'AIGC 中世纪奇幻对决',
     type: 'AIGC Motion',
     category: 'aigc',
     video: videoPath('aigc_fantasy_duel.mp4'),
-    summary: 'AIGC 概念镜头，强调风格探索和画面张力。',
+    summary: '强调风格探索、画面张力和镜头节奏的 AI 概念片段。',
+    value: '适合展示 AIGC 视觉探索能力和叙事镜头感。',
   },
 ];
 
@@ -170,319 +228,94 @@ const specialties = [
   {
     icon: Workflow,
     marker: '01 / Pipeline',
-    title: '全流程影像输出',
-    detail: '从脚本拆解、资产搭建、镜头动画、材质灯光、渲染合成到最终剪辑输出，可以独立完成一条商业三维动画的完整生产链路。',
-    proof: '产品动画、工业演示、文创宣传与提案详情页均有完整落地经验。',
-  },
-  {
-    icon: Zap,
-    marker: '02 / X-Particles',
-    title: 'XP 粒子与特效融入流程',
-    detail: '擅长将 X-Particles、VDB、动力学、Mograph 等效果纳入常规制作流程，让产品、舞美和大屏视觉拥有更强的能量感与高级调性。',
-    proof: '覆盖粒子海洋、倒计时、消散、VJ 卡点循环和裸眼 3D 视觉。',
+    title: '从概念到成片的完整交付',
+    detail: '能把脚本拆解、分镜、三维资产、镜头动画、材质灯光、渲染合成和最终输出串成一条可执行流程。',
+    proof: '适用于产品发布、工业演示、展厅循环片和品牌提案等需要稳定落地的商业项目。',
   },
   {
     icon: RadioTower,
-    marker: '03 / Screen Delivery',
-    title: '裸眼 3D 与超规格大屏交付',
-    detail: '熟悉超宽屏、360 度展厅、异形屏和投射适配逻辑，能把三维内容按真实播放场景裁切、校正、优化并稳定交付。',
-    proof: '曾参与京东方 360 度展厅等 14K 级别项目，负责核心资产、镜头与屏幕适配。',
+    marker: '02 / Screen Delivery',
+    title: '大屏、裸眼 3D 与展厅适配',
+    detail: '熟悉超宽屏、360 度展厅、异形屏和裸眼 3D 的比例、视角、循环播放和现场交付逻辑。',
+    proof: '曾参与京东方 360 度展厅等 14K 级别项目，具备高规格屏幕内容交付经验。',
   },
   {
     icon: Box,
-    marker: '04 / Visual Tone',
-    title: '工业逻辑与商业审美结合',
-    detail: '机械设计背景让结构理解、模型优化和运动逻辑更扎实，同时通过 C4D、Redshift、Arnold、Octane 与 AE 合成控制画面质感。',
-    proof: '在汽车、工业机械、科技产品与高保真个人渲染中持续强化调性控制。',
+    marker: '03 / Product Logic',
+    title: '工业结构理解与产品表达',
+    detail: '机械设计背景让模型结构、运动逻辑和产品卖点拆解更扎实，能把复杂产品转成客户看得懂的影像。',
+    proof: '覆盖汽车、工业机械、科技硬件、骑行产品等需要结构说明与质感展示的方向。',
+  },
+  {
+    icon: Zap,
+    marker: '04 / VFX Tone',
+    title: '粒子、动力学与商业审美',
+    detail: '将 X-Particles、VDB、动力学、Mograph 和 AE 合成用于产品、舞美和品牌视觉，让画面更有能量和完成度。',
+    proof: '可服务倒计时、消散、循环大屏、Logo 演绎、VJ 卡点和沉浸式视觉内容。',
   },
   {
     icon: CircuitBoard,
-    marker: '05 / AI Coding',
-    title: 'AI Vibe Coding 与本地工作流搭建',
-    detail: '持续把 Codex、Claude Code 等 AI coding 工具融入个人生产流程，用自然语言快速完成网站搭建、脚本辅助、素材整理和方案迭代。',
-    proof: '本站即由 Codex 辅助完成 React + Vite 搭建；同时具备本地部署 ComfyUI、调试节点工作流并服务视觉资产生产的能力。',
+    marker: '05 / AI Workflow',
+    title: 'AI 辅助提案与效率工作流',
+    detail: '把 Codex、Claude Code、ComfyUI 与 AIGC 视频流程纳入个人生产方式，用于网站、脚本、素材整理和概念镜头预演。',
+    proof: '本站由 Codex 辅助完成 React + Vite 搭建，并持续服务个人项目包装与视觉资产生产。',
   },
 ];
 
-function ProjectPreview({ poster, src, title }) {
+function ProjectPreview({ poster, src, title, eager = false }) {
   const videoRef = useRef(null);
-  const [isActive, setIsActive] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(eager);
 
   useEffect(() => {
     const node = videoRef.current;
-    if (!node) {
+    if (!node || eager) {
       return undefined;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const nearViewport = entry.isIntersecting;
-        setShouldLoad(nearViewport);
-        setIsActive(nearViewport);
+        setShouldLoad(entry.isIntersecting);
       },
-      {
-        rootMargin: '120px 0px',
-        threshold: 0.18,
-      },
+      { rootMargin: '180px 0px', threshold: 0.12 },
     );
 
     observer.observe(node);
-
     return () => observer.disconnect();
-  }, []);
+  }, [eager]);
 
   useEffect(() => {
     const node = videoRef.current;
-    if (!node) {
-      return;
-    }
+    if (!node) return;
 
-    if (isActive && shouldLoad) {
+    if (shouldLoad) {
       const playPromise = node.play();
-      if (playPromise?.catch) {
-        playPromise.catch(() => {});
-      }
+      if (playPromise?.catch) playPromise.catch(() => {});
       return;
     }
 
     node.pause();
-    if (!shouldLoad) {
-      node.removeAttribute('src');
-      node.load();
-    }
-  }, [isActive, shouldLoad]);
+  }, [shouldLoad]);
 
   return (
     <video
       ref={videoRef}
-      poster={poster}
-      src={shouldLoad ? src : undefined}
-      muted
-      loop
-      playsInline
-      preload="none"
       aria-label={title}
+      loop
+      muted
+      playsInline
+      poster={poster}
+      preload={eager ? 'auto' : 'none'}
+      src={shouldLoad ? src : undefined}
     />
   );
 }
 
 function App() {
-  const appRef = useRef(null);
-  const projectParallaxRef = useRef([]);
   const [activeFilter, setActiveFilter] = useState('all');
   const visibleProjects =
     activeFilter === 'all'
       ? projects
       : projects.filter((project) => project.category === activeFilter);
-
-  useLayoutEffect(() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const ctx = gsap.context(() => {
-      if (reduceMotion) {
-        gsap.set(
-          [
-            '.opening-overlay',
-            '.opening-mask',
-            '.opening-word',
-            '.opening-line',
-            '.opening-meta',
-            '.site-header',
-            '.hero-video',
-            '.hero-grid',
-            '.hero .eyebrow',
-            '.hero-title-wrap',
-            '.hero-lead',
-            '.hero-actions',
-            '.hero-panel',
-            '.section-kicker',
-            '.section-title-row',
-            '.profile-content > .eyebrow',
-            '.profile-content h2',
-            '.section-copy',
-            '.profile-meta',
-            '.contact-inner > *',
-            '.motion-card',
-            '.portrait-frame',
-            '.project-media',
-          ],
-          { clearProps: 'all' },
-        );
-        gsap.set('.opening-overlay', { autoAlpha: 0, pointerEvents: 'none' });
-        return;
-      }
-
-      gsap.set('.site-header', { y: -34, autoAlpha: 0 });
-      gsap.set('.hero-video', { scale: 1.18, opacity: 0 });
-      gsap.set('.hero-grid', { opacity: 0 });
-      gsap.set('.hero .eyebrow', { yPercent: 110, autoAlpha: 0 });
-      gsap.set('.hero-title-wrap', { clipPath: 'inset(0 100% 0 0)' });
-      gsap.set('.hero h1', { xPercent: -10, scaleX: 0.64, transformOrigin: 'left center' });
-      gsap.set(['.hero-lead', '.hero-actions', '.hero-panel'], { y: 54, autoAlpha: 0 });
-      gsap.set('.opening-word', { yPercent: 130, scaleY: 1.35, transformOrigin: '50% 100%' });
-      gsap.set('.opening-line', { scaleX: 0, transformOrigin: 'left center' });
-      gsap.set('.opening-meta', { y: 20, autoAlpha: 0 });
-
-      const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
-      intro
-        .to('.opening-word', {
-          yPercent: 0,
-          scaleY: 1,
-          duration: 1.08,
-          stagger: 0.12,
-        })
-        .to('.opening-line', { scaleX: 1, duration: 1.0 }, 0.2)
-        .to('.opening-meta', { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.08 }, 0.5)
-        .to('.opening-mask', { yPercent: -100, duration: 1.18, ease: 'power4.inOut' }, 1.32)
-        .to('.opening-overlay', { autoAlpha: 0, pointerEvents: 'none', duration: 0.35 }, 2.18)
-        .to('.hero-video', { scale: 1, opacity: 0.78, duration: 1.7 }, 1.34)
-        .to('.hero-grid', { opacity: 0.42, duration: 1.2 }, 1.6)
-        .to('.site-header', { y: 0, autoAlpha: 1, duration: 0.9 }, 1.76)
-        .to('.hero .eyebrow', { yPercent: 0, autoAlpha: 1, duration: 0.9 }, 1.86)
-        .to('.hero-title-wrap', { clipPath: 'inset(0 0% 0 0)', duration: 1.15, ease: 'power4.inOut' }, 1.96)
-        .to('.hero h1', { xPercent: 0, scaleX: 1, duration: 1.28, ease: 'power4.out' }, 2.0)
-        .to('.hero-lead', { y: 0, autoAlpha: 1, duration: 0.92 }, 2.42)
-        .to('.hero-actions', { y: 0, autoAlpha: 1, duration: 0.88 }, 2.58)
-        .to('.hero-panel', { y: 0, autoAlpha: 1, duration: 1.0 }, 2.72);
-
-      gsap.utils.toArray('.motion-section').forEach((section) => {
-        const owned = (selector) =>
-          gsap.utils
-            .toArray(section.querySelectorAll(selector))
-            .filter((element) => element.closest('.motion-section') === section);
-        const firstOwned = (selector) => owned(selector)[0];
-
-        const kicker = firstOwned('.section-kicker');
-        const titleRow = firstOwned('.section-title-row');
-        const profileBits = owned('.profile-content > .eyebrow, .profile-content h2, .section-copy, .profile-meta');
-        const cards = owned('.motion-card');
-        const portrait = firstOwned('.portrait-frame');
-        const media = owned('.project-media');
-        const contactBits = owned('.contact-inner > *');
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 72%',
-            end: 'bottom 35%',
-            toggleActions: 'play none none reverse',
-          },
-          defaults: { ease: 'power4.out' },
-        });
-
-        if (kicker) {
-          gsap.set(kicker, { xPercent: -18, y: 80, scaleX: 1.35, autoAlpha: 0, transformOrigin: 'left center' });
-          tl.to(kicker, { xPercent: 0, y: 0, scaleX: 1, autoAlpha: 1, duration: 1.25 }, 0);
-        }
-
-        if (titleRow) {
-          gsap.set(titleRow, { y: 72, clipPath: 'inset(0 0 100% 0)', autoAlpha: 0 });
-          tl.to(titleRow, { y: 0, clipPath: 'inset(0 0 0% 0)', autoAlpha: 1, duration: 1.05 }, 0.2);
-        }
-
-        if (profileBits.length) {
-          gsap.set(profileBits, { y: 58, autoAlpha: 0 });
-          tl.to(profileBits, { y: 0, autoAlpha: 1, duration: 0.95, stagger: 0.09 }, 0.18);
-        }
-
-        if (portrait) {
-          gsap.set(portrait, { clipPath: 'inset(0 0 100% 0)', y: 80, scale: 1.06, autoAlpha: 0 });
-          tl.to(portrait, { clipPath: 'inset(0 0 0% 0)', y: 0, scale: 1, autoAlpha: 1, duration: 1.2 }, 0.1);
-        }
-
-        if (cards.length) {
-          gsap.set(cards, { y: 100, autoAlpha: 0, clipPath: 'inset(0 0 100% 0)' });
-          tl.to(cards, {
-            y: 0,
-            autoAlpha: 1,
-            clipPath: 'inset(0 0 0% 0)',
-            duration: 1.08,
-            stagger: { each: 0.08, from: 'start' },
-          }, 0.42);
-        }
-
-        if (media.length) {
-          gsap.set(media, { clipPath: 'inset(100% 0 0 0)' });
-          tl.to(media, {
-            clipPath: 'inset(0% 0 0 0)',
-            duration: 1.0,
-            stagger: { each: 0.06, from: 'start' },
-          }, 0.5);
-        }
-
-        if (contactBits.length) {
-          gsap.set(contactBits, { y: 86, autoAlpha: 0, clipPath: 'inset(0 0 100% 0)' });
-          tl.to(contactBits, {
-            y: 0,
-            autoAlpha: 1,
-            clipPath: 'inset(0 0 0% 0)',
-            duration: 1.12,
-            stagger: 0.12,
-          }, 0.28);
-        }
-      });
-
-    }, appRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
-    if (!appRef.current) {
-      return;
-    }
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const cards = appRef.current.querySelectorAll('#works .project-card');
-
-    projectParallaxRef.current.forEach((trigger) => trigger.kill());
-    projectParallaxRef.current = [];
-
-    if (!reduceMotion && cards.length) {
-      gsap.fromTo(
-        cards,
-        { y: 42, autoAlpha: 0, clipPath: 'inset(0 0 100% 0)' },
-        {
-          y: 0,
-          autoAlpha: 1,
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 0.82,
-          ease: 'power4.out',
-          stagger: { each: 0.045, from: 'start' },
-          overwrite: 'auto',
-        },
-      );
-
-      gsap.utils.toArray(appRef.current.querySelectorAll('#works .project-media video')).forEach((video) => {
-        const tween = gsap.fromTo(
-          video,
-          { yPercent: -6, scale: 1.1 },
-          {
-            yPercent: 6,
-            scale: 1.04,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: video.closest('.project-card'),
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.9,
-            },
-          },
-        );
-
-        if (tween.scrollTrigger) {
-          projectParallaxRef.current.push(tween.scrollTrigger);
-        }
-      });
-    }
-
-    ScrollTrigger.refresh();
-
-    return () => {
-      projectParallaxRef.current.forEach((trigger) => trigger.kill());
-      projectParallaxRef.current = [];
-    };
-  }, [activeFilter]);
 
   return (
     <ClickSpark
@@ -494,28 +327,13 @@ function App() {
       sparkRadius={28}
       sparkSize={13}
     >
-      <div className="site-shell" ref={appRef}>
-        <div className="opening-overlay" aria-hidden="true">
-          <div className="opening-mask">
-            <div className="opening-inner">
-              <div className="opening-row">
-                <span className="opening-word">HAWEO</span>
-              </div>
-              <div className="opening-line" />
-              <div className="opening-meta">
-                <span>3D MOTION DESIGNER</span>
-                <span>AI / VFX / EXHIBITION VISUAL</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div className="site-shell">
         <header className="site-header">
           <a className="brand" href="#top" aria-label="返回首页">
             <span className="brand-mark">H</span>
             <span className="brand-copy">
               <strong>HAWEO</strong>
-              <small>3D Motion Designer</small>
+              <small>Commercial 3D Motion</small>
             </span>
           </a>
           <nav className="site-nav" aria-label="主导航">
@@ -532,246 +350,307 @@ function App() {
         </header>
 
         <main id="top">
-        <section className="hero" aria-label="首页 Hero">
-          <video
-            className="hero-video"
-            poster={posterPath('hero_showreel.mp4')}
-            src={videoPath('hero_showreel.mp4')}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-          />
-          <div className="hero-overlay" />
-          <div className="hero-grid" />
+          <section className="hero" aria-label="首页">
+            <ProjectPreview
+              eager
+              poster={posterPath('hero_showreel.mp4')}
+              src={videoPath('hero_showreel.mp4')}
+              title="HAWEO showreel"
+            />
+            <div className="hero-overlay" />
+            <div className="hero-grid" />
 
-          <div className="hero-inner">
-            <div className="hero-copy">
-              <p className="eyebrow">
-                3D ANIMATION / AIGC / VFX / EXHIBITION VISUAL
-              </p>
-              <div className="hero-title-wrap">
+            <div className="hero-inner">
+              <div className="hero-copy">
+                <p className="eyebrow">3D ANIMATION / AIGC / VFX / EXHIBITION VISUAL</p>
                 <h1>HAWEO</h1>
+                <p className="hero-lead">
+                  为产品发布、展厅大屏、汽车与工业品牌制作可交付的 3D 动画与 AIGC 视觉内容。
+                </p>
+                <p className="hero-sublead">
+                  从脚本分镜、三维制作、特效合成到超宽屏 / 裸眼 3D 适配，提供面向真实商业场景的完整落地流程。
+                </p>
+                <div className="hero-actions">
+                  <a className="button button-primary" href="#case-studies">
+                    <Play size={18} fill="currentColor" />
+                    查看代表案例
+                  </a>
+                  <a className="button button-ghost" href="#contact">
+                    讨论项目需求
+                    <ArrowRight size={18} />
+                  </a>
+                </div>
               </div>
-              <p className="hero-lead">
-                三维动画与实时视觉设计，面向产品发布、裸眼大屏、展厅影像和高质感商业短片。
-              </p>
-              <div className="hero-actions">
-                <a className="button button-primary" href="#works">
-                  <Play size={18} fill="currentColor" />
-                  查看精选项目
-                </a>
-                <a className="button button-ghost" href="#contact">
-                  获取合作方式
-                  <ArrowRight size={18} />
-                </a>
+
+              <BorderGlow animated className="hero-panel" edgeSensitivity={22} fillOpacity={0.2} glowRadius={42}>
+                <div>
+                  <span>Current Focus</span>
+                  <strong>AI assisted 3D pipeline</strong>
+                </div>
+                <div>
+                  <span>Available For</span>
+                  <strong>产品动画 / 裸眼3D / VFX大屏 / AIGC提案</strong>
+                </div>
+                <div>
+                  <span>Base</span>
+                  <strong>成都 · 远程协作 · 商业交付</strong>
+                </div>
+              </BorderGlow>
+            </div>
+          </section>
+
+          <section id="profile" className="section profile-section">
+            <p className="section-kicker" aria-hidden="true">POSITIONING</p>
+            <div className="section-inner profile-grid">
+              <div className="portrait-frame" aria-label="作品动态预览">
+                <ProjectPreview
+                  eager
+                  poster={posterPath('portrait_motion.mp4')}
+                  src={videoPath('portrait_motion.mp4')}
+                  title="motion portrait"
+                />
+                <div className="portrait-caption">
+                  <span>HAWEO</span>
+                  <strong>Motion Portfolio</strong>
+                </div>
+              </div>
+
+              <div className="profile-content">
+                <p className="eyebrow">WHAT I SOLVE</p>
+                <h2>把复杂视觉项目，做成客户能理解、团队能推进、现场能播放的成片资产。</h2>
+                <p className="section-copy">
+                  我不是只展示软件能力，而是把三维动画、工业结构理解、AIGC 概念预演、VFX 特效和屏幕交付经验组合起来，
+                  服务产品发布、展厅大屏、汽车工业、科技硬件和品牌提案等需要稳定落地的商业项目。
+                </p>
+                <div className="service-list">
+                  {serviceTypes.map((item) => (
+                    <span key={item}>
+                      <CheckCircle2 size={17} />
+                      {item}
+                    </span>
+                  ))}
+                </div>
+                <div className="profile-meta">
+                  <a href="tel:13084345226">
+                    <Phone size={18} />
+                    13084345226
+                  </a>
+                  <a href="mailto:522369446@qq.com">
+                    <Mail size={18} />
+                    522369446@qq.com
+                  </a>
+                  <span>
+                    <MapPin size={18} />
+                    成都 / 远程
+                  </span>
+                </div>
               </div>
             </div>
 
-            <BorderGlow
-              aria-label="项目摘要"
-              animated
-              className="hero-panel"
-              edgeSensitivity={22}
-              fillOpacity={0.2}
-              glowRadius={42}
-            >
-              <div>
-                <span>Current Focus</span>
-                <strong>AI assisted 3D pipeline</strong>
-              </div>
-              <div>
-                <span>Available For</span>
-                <strong>产品动画 / 裸眼3D / VFX大屏</strong>
-              </div>
-              <div>
-                <span>Base</span>
-                <strong>成都 · 远程协作</strong>
-              </div>
-            </BorderGlow>
-          </div>
-        </section>
+            <div className="section-inner metric-grid">
+              {metrics.map((item) => (
+                <BorderGlow className="metric-card" key={item.label}>
+                  <strong>
+                    {item.value}
+                    <span>{item.suffix}</span>
+                  </strong>
+                  <p>{item.label}</p>
+                </BorderGlow>
+              ))}
+            </div>
+          </section>
 
-        <section id="profile" className="section profile-section motion-section">
-          <p className="section-kicker" aria-hidden="true">PROFILE</p>
-          <div className="section-inner profile-grid">
-            <div className="portrait-frame" aria-label="人物图占位">
-              <video
-                className="portrait-video"
-                poster={posterPath('portrait_motion.mp4')}
-                src={videoPath('portrait_motion.mp4')}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
-              <div className="portrait-lines">
-                <span />
-                <span />
-                <span />
+          <section id="specialties" className="section specialties-section">
+            <p className="section-kicker" aria-hidden="true">ADVANTAGES</p>
+            <div className="section-inner">
+              <div className="section-title-row">
+                <div>
+                  <p className="eyebrow">ADVANTAGES</p>
+                  <h2>客户为什么可以把项目交给我</h2>
+                </div>
+                <p>
+                  重点不是会多少软件，而是能不能把创意、技术、时间、素材和最终播放场景串成稳定交付。
+                </p>
               </div>
-              <div className="portrait-caption">
-                <span>HAWEO</span>
-                <strong>Motion Portrait</strong>
+              <div className="specialty-grid">
+                {specialties.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <BorderGlow
+                      className={item.marker === '05 / AI Workflow' ? 'specialty-card specialty-card-wide' : 'specialty-card'}
+                      fillOpacity={0.22}
+                      glowRadius={42}
+                      key={item.title}
+                    >
+                      <div className="specialty-head">
+                        <span className="specialty-icon">
+                          <Icon size={22} />
+                        </span>
+                        <span>{item.marker}</span>
+                      </div>
+                      <h3>{item.title}</h3>
+                      <p>{item.detail}</p>
+                      <strong>{item.proof}</strong>
+                    </BorderGlow>
+                  );
+                })}
               </div>
             </div>
+          </section>
 
-            <div className="profile-content">
-              <p className="eyebrow">PROFILE</p>
-              <h2>用工程逻辑做影像，用审美控制完成交付。</h2>
-              <p className="section-copy">
-                关于我：一名拥有 10 年商业视觉经验的三维设计师，长期服务于产品动画、HMI 动效、VJ 舞美大屏、裸眼 3D 展厅与 AIGC 视觉提案。工作方式强调从概念、资产、镜头、渲染、合成到屏幕适配的完整闭环，让复杂视觉在有限周期内稳定落地。
-              </p>
-
-              <div className="profile-meta">
-                <a href="tel:13084345226">
-                  <Phone size={18} />
-                  13084345226
-                </a>
-                <a href="mailto:522369446@qq.com">
-                  <Mail size={18} />
-                  522369446@qq.com
-                </a>
-                <span>
-                  <MapPin size={18} />
-                  成都 / 远程
-                </span>
+          <section id="case-studies" className="section case-section">
+            <p className="section-kicker" aria-hidden="true">CASES</p>
+            <div className="section-inner">
+              <div className="section-title-row">
+                <div>
+                  <p className="eyebrow">REPRESENTATIVE CASES</p>
+                  <h2>三个方向，看见交付价值</h2>
+                </div>
+                <p>
+                  每个案例都不只展示画面，而是说明客户场景、我的角色和最终可以复用的商业价值。
+                </p>
               </div>
 
-              <div className="metric-grid">
-                {metrics.map((item) => (
-                  <BorderGlow className="metric-card motion-card" key={item.label}>
-                    <strong>
-                      {item.value}
-                      <span>{item.suffix}</span>
-                    </strong>
-                    <p>{item.label}</p>
+              <div className="case-grid">
+                {caseStudies.map((caseItem) => (
+                  <BorderGlow className="case-card" fillOpacity={0.18} glowRadius={38} key={caseItem.title}>
+                    <div className="case-media">
+                      <ProjectPreview
+                        poster={posterPath(caseItem.video.split('/').pop())}
+                        src={caseItem.video}
+                        title={caseItem.title}
+                      />
+                    </div>
+                    <div className="case-content">
+                      <span>{caseItem.tag}</span>
+                      <h3>{caseItem.title}</h3>
+                      <dl>
+                        <div>
+                          <dt>客户场景</dt>
+                          <dd>{caseItem.challenge}</dd>
+                        </div>
+                        <div>
+                          <dt>我的角色</dt>
+                          <dd>{caseItem.role}</dd>
+                        </div>
+                        <div>
+                          <dt>交付价值</dt>
+                          <dd>{caseItem.outcome}</dd>
+                        </div>
+                      </dl>
+                    </div>
                   </BorderGlow>
                 ))}
               </div>
             </div>
-          </div>
+          </section>
 
-          <div id="specialties" className="section-inner experience-wrap motion-section motion-subsection">
-            <p className="section-kicker" aria-hidden="true">ADVANTAGES</p>
-            <div className="section-title-row">
-              <div>
-                <p className="eyebrow">ADVANTAGES</p>
-                <h2>个人优势</h2>
+          <section id="works" className="section works-section">
+            <p className="section-kicker" aria-hidden="true">SELECTED WORKS</p>
+            <div className="section-inner">
+              <div className="section-title-row">
+                <div>
+                  <p className="eyebrow">SELECTED WORKS</p>
+                  <h2>精选项目</h2>
+                </div>
+                <p>
+                  卡片保留动态预览，同时补充每个作品适合解决的商业场景，方便客户快速判断匹配度。
+                </p>
               </div>
-              <p>
-                从经历里提炼出的核心优势：不是单纯会软件，而是能把创意、技术、渲染、特效和最终播放场景串成可交付的作品。
-              </p>
-            </div>
-            <div className="specialty-grid">
-              {specialties.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <BorderGlow
-                    className={
-                      item.marker === '05 / AI Coding'
-                        ? 'specialty-card specialty-card-wide motion-card'
-                        : 'specialty-card motion-card'
-                    }
-                    key={item.title}
-                    glowRadius={42}
-                    fillOpacity={0.22}
+
+              <div className="filter-bar" aria-label="项目筛选">
+                {projectFilters.map((filter) => (
+                  <button
+                    className={activeFilter === filter.id ? 'is-active' : ''}
+                    key={filter.id}
+                    onClick={() => setActiveFilter(filter.id)}
+                    type="button"
                   >
-                    <div className="specialty-head">
-                      <span className="specialty-icon">
-                        <Icon size={22} />
-                      </span>
-                      <span>{item.marker}</span>
-                    </div>
-                    <h3>{item.title}</h3>
-                    <p>{item.detail}</p>
-                    <strong>{item.proof}</strong>
-                  </BorderGlow>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section id="works" className="section works-section motion-section">
-          <p className="section-kicker" aria-hidden="true">SELECTED WORKS</p>
-          <div className="section-inner">
-            <div className="section-title-row">
-              <div>
-                <p className="eyebrow">SELECTED WORKS</p>
-                <h2>精选项目</h2>
+                    {filter.label}
+                  </button>
+                ))}
               </div>
+
+              <div className="project-grid">
+                {visibleProjects.map((project) => (
+                  <BorderGlow
+                    className={project.featured ? 'project-card is-featured' : 'project-card'}
+                    edgeSensitivity={24}
+                    fillOpacity={0.18}
+                    glowRadius={38}
+                    key={project.title}
+                  >
+                    <div className="project-media">
+                      <ProjectPreview
+                        poster={posterPath(project.video.split('/').pop())}
+                        src={project.video}
+                        title={project.title}
+                      />
+                      <span className="play-chip">
+                        <MonitorPlay size={16} />
+                        Loop Preview
+                      </span>
+                    </div>
+                    <div className="project-info">
+                      <span>{project.type}</span>
+                      <h3>{project.title}</h3>
+                      <p>{project.summary}</p>
+                      <strong>{project.value}</strong>
+                    </div>
+                  </BorderGlow>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="section process-section">
+            <p className="section-kicker" aria-hidden="true">WORKFLOW</p>
+            <div className="section-inner">
+              <div className="section-title-row">
+                <div>
+                  <p className="eyebrow">WORKFLOW</p>
+                  <h2>合作流程更清楚，项目推进更顺</h2>
+                </div>
+                <p>
+                  适合从一个模糊想法开始，也适合已有脚本、产品资料或展厅规格后进入制作。
+                </p>
+              </div>
+              <div className="process-grid">
+                {projectStages.map((stage) => (
+                  <BorderGlow className="process-card" key={stage.step}>
+                    <span>{stage.step}</span>
+                    <h3>{stage.title}</h3>
+                    <p>{stage.text}</p>
+                  </BorderGlow>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="contact" className="contact-section">
+            <p className="section-kicker" aria-hidden="true">CONTACT</p>
+            <div className="contact-inner">
+              <p className="eyebrow">CONTACT</p>
+              <h2>把下一个视觉项目，整理成可以落地的成片方案。</h2>
               <p>
-                卡片内使用轻量循环视频预览，保留动态效果，避免直接加载原始大文件。点击筛选可快速查看不同方向作品。
+                产品动画、三维短片、AIGC 分镜、裸眼 3D、大屏循环视觉或展厅项目，都可以先从素材、周期和播放场景聊起。
               </p>
+              <div className="contact-actions">
+                <a className="button button-primary" href="mailto:522369446@qq.com">
+                  <Mail size={18} />
+                  发送邮件
+                </a>
+                <a className="button button-ghost" href="tel:13084345226">
+                  <Phone size={18} />
+                  13084345226
+                </a>
+              </div>
+              <footer>
+                <span>HAWEO</span>
+                <span>3D Motion / AIGC / VFX</span>
+              </footer>
             </div>
-
-            <div className="filter-bar" aria-label="项目筛选">
-              {projectFilters.map((filter) => (
-                <button
-                  className={activeFilter === filter.id ? 'is-active' : ''}
-                  key={filter.id}
-                  type="button"
-                  onClick={() => setActiveFilter(filter.id)}
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="project-grid">
-              {visibleProjects.map((project) => (
-                <BorderGlow
-                  className={project.featured ? 'project-card is-featured motion-card' : 'project-card motion-card'}
-                  key={project.title}
-                  edgeSensitivity={24}
-                  fillOpacity={0.18}
-                  glowRadius={38}
-                >
-                  <div className="project-media">
-                    <ProjectPreview poster={posterPath(project.video.split('/').pop())} src={project.video} title={project.title} />
-                    <span className="play-chip">
-                      <MonitorPlay size={16} />
-                      Loop Preview
-                    </span>
-                  </div>
-                  <div className="project-info">
-                    <span>{project.type}</span>
-                    <h3>{project.title}</h3>
-                    <p>{project.summary}</p>
-                  </div>
-                </BorderGlow>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" className="contact-section motion-section">
-          <p className="section-kicker" aria-hidden="true">CONTACT</p>
-          <div className="contact-inner">
-            <p className="eyebrow">CONTACT</p>
-            <h2>把下一个镜头做成能交付的视觉资产。</h2>
-            <p>
-              产品动画、三维短片、AIGC 分镜、裸眼 3D、大屏循环视觉或展厅项目，都可以先从素材、周期和播放场景聊起。
-            </p>
-            <div className="contact-actions">
-              <a className="button button-primary" href="mailto:522369446@qq.com">
-                <Mail size={18} />
-                发送邮件
-              </a>
-              <a className="button button-ghost" href="tel:13084345226">
-                <Phone size={18} />
-                13084345226
-              </a>
-            </div>
-            <footer>
-              <span>HAWEO</span>
-              <span>3D Motion / AIGC / VFX</span>
-            </footer>
-          </div>
-        </section>
+          </section>
         </main>
       </div>
     </ClickSpark>
