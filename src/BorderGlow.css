@@ -17,7 +17,6 @@
     rgb(0 0 0 / 16%) 0 1px 2px,
     rgb(0 0 0 / 14%) 0 8px 24px,
     rgb(0 0 0 / 18%) 0 26px 70px;
-  transform: translate3d(0, 0, 0.01px);
 }
 
 .border-glow-card::before,

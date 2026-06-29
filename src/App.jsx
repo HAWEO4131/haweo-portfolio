@@ -4,10 +4,12 @@ import {
   CheckCircle2,
   CircuitBoard,
   Mail,
+  Menu,
   MapPin,
   MonitorPlay,
   Phone,
   Play,
+  X,
   RadioTower,
   Workflow,
   Zap,
@@ -75,12 +77,12 @@ const caseStudies = [
     outcome: '让三维内容可以在展厅大屏里稳定播放，并服务企业空间展示的科技调性。',
   },
   {
-    title: 'AIGC 提案：汽车概念镜头',
+    title: 'AIGC 提案：BMW 概念镜头',
     tag: 'AI Concept',
-    video: videoPath('aigc_mazda.mp4'),
-    challenge: '提案阶段需要快速验证氛围、镜头语言和风格方向，传统全流程成本较高。',
-    role: '用 AIGC 快速生成概念镜头，结合剪辑节奏和三维审美判断完成提案预演。',
-    outcome: '帮助项目在早期更快看见方向，降低试错成本，并为后续三维精制提供参考。',
+    video: videoPath('aigc_bmw_concept.mp4'),
+    challenge: '汽车概念提案需要快速呈现品牌气质、空间氛围和镜头冲击力，前期验证速度很关键。',
+    role: '使用 AIGC 生成汽车概念镜头，并结合剪辑节奏、画面调性和三维审美判断完成提案预演。',
+    outcome: '让客户在早期快速看见方向，降低试错成本，并为后续三维精制或广告分镜提供参考。',
   },
 ];
 
@@ -88,7 +90,7 @@ const projects = [
   {
     title: '综合作品快闪',
     type: 'Showreel',
-    category: 'screen',
+    category: 'showreel',
     video: videoPath('hero_showreel.mp4'),
     summary: '快速展示产品动画、展厅视觉、AIGC 与 VFX 大屏方向，适合作为初步能力概览。',
     value: '让客户在一分钟内理解整体风格、项目跨度和交付能力。',
@@ -111,6 +113,30 @@ const projects = [
     value: '适合电商、社媒短片、新品发布和招商展示。',
   },
   {
+    title: '全球科技标题包装',
+    type: 'Title Package',
+    category: 'product',
+    video: videoPath('global_tech_title_package.mp4'),
+    summary: '以地球、轨道光效和空间推进构建科技感主标题，强调信息开场的仪式感与国际化气质。',
+    value: '适合科技发布会、企业宣传片片头、展厅序章和品牌主视觉开场。',
+  },
+  {
+    title: '户外智能灭蚊设备动画',
+    type: 'Premium Outdoor Device',
+    category: 'product',
+    video: videoPath('outdoor_mosquito_killer.mp4'),
+    summary: '以克制的产品镜头呈现户外灭蚊设备的结构轮廓、夜间使用场景和智能化功能质感。',
+    value: '适合高端户外家电、庭院生活方式品牌、发布会视觉和电商旗舰页展示。',
+  },
+  {
+    title: '高端多功能宠物舱动画',
+    type: 'Smart Pet Living',
+    category: 'product',
+    video: videoPath('premium_pet_cabin.mp4'),
+    summary: '以高端家居语境呈现智能宠物舱的产品形态、舒适空间和多功能集成体验。',
+    value: '适合高净值宠物用户、智能家居品牌、旗舰店详情页和新品发布视觉。',
+  },
+  {
     title: '工业产品动画',
     type: 'Industrial',
     category: 'auto',
@@ -127,28 +153,20 @@ const projects = [
     value: '适合汽车品牌视觉、局部功能展示和高质感短片片段。',
   },
   {
-    title: 'Porsche 汽车渲染',
+    title: 'Porsche 车身光影大片',
     type: 'Automotive',
     category: 'auto',
     video: videoPath('porsche_render.mp4'),
-    summary: '控制曲面反射、灯光层次和镜头节奏，呈现高端汽车产品质感。',
-    value: '适合汽车类视觉提案、广告分镜预演和产品氛围片。',
+    summary: '以车身曲面反射、低调灯光层次和镜头推进，建立高端跑车的产品气质。',
+    value: '适合汽车品牌视觉提案、广告分镜预演和产品氛围片。',
   },
   {
-    title: 'Porsche 汽车渲染二',
-    type: 'Automotive',
-    category: 'auto',
-    video: videoPath('porsche_render_2.mp4'),
-    summary: '延续同系列视觉语言，补充更多车身角度和细节表达。',
-    value: '可作为汽车项目作品集的系列化展示素材。',
-  },
-  {
-    title: 'Porsche 汽车渲染三',
+    title: 'Porsche 运动姿态视觉',
     type: 'Automotive',
     category: 'auto',
     video: videoPath('porsche_render_3.mp4'),
-    summary: '以稳定的汽车渲染调性展示镜头组织和材质控制。',
-    value: '适合补充汽车方向的风格证明。',
+    summary: '通过稳定的汽车渲染调性、镜头组织和材质控制，强化速度感与机械精密感。',
+    value: '适合补充汽车方向的风格证明、品牌短片片段和社媒视觉资产。',
   },
   {
     title: '裸眼 3D 魔方屏幕',
@@ -159,19 +177,59 @@ const projects = [
     value: '适合商场大屏、展厅入口、活动现场和异形屏展示。',
   },
   {
-    title: '京东方展厅',
-    type: 'Exhibition Visual',
+    title: '裸眼 3D 兵马俑视觉',
+    type: 'Naked-eye 3D',
     category: 'screen',
-    video: videoPath('boe_exhibition_hall.mp4'),
-    summary: '面向京东方展厅超宽屏场景的沉浸式视觉内容，强调科技空间氛围与大屏节奏。',
-    value: '适合企业展厅、科技馆、超宽屏幕和沉浸空间播放。',
+    video: videoPath('naked_eye_terracotta.mp4'),
+    summary: '将文化主题、空间纵深和出屏节奏结合，形成适合户外大屏观看的沉浸画面。',
+    value: '适合文旅地标屏、城市商业大屏和文化主题活动视觉。',
   },
   {
-    title: '京东方展厅 2',
+    title: '裸眼 3D 汽车大屏',
+    type: 'Naked-eye 3D',
+    category: 'screen',
+    video: videoPath('naked_eye_auto_screen.mp4'),
+    summary: '围绕汽车主体的运动轨迹、透视冲击和屏幕边界关系设计出屏效果。',
+    value: '适合汽车发布、商圈巨幕广告和品牌快闪活动。',
+  },
+  {
+    title: '兵马俑 IP 大屏视觉',
+    type: 'Naked-eye 3D',
+    category: 'screen',
+    video: videoPath('naked_eye_ip_terracotta.mp4'),
+    summary: '以 IP 化角色表达文化符号，在大屏尺度中兼顾识别度、趣味性和视觉记忆点。',
+    value: '适合文旅 IP 宣传、城市公共屏和活动主视觉延展。',
+  },
+  {
+    title: '科技空间裸眼 3D',
+    type: 'Naked-eye 3D',
+    category: 'screen',
+    video: videoPath('naked_eye_tech_screen.mp4'),
+    summary: '用冷静的科技材质、空间结构和镜头层次，构建面向商业大屏的未来感视觉。',
+    value: '适合科技品牌、企业展厅入口屏和发布会现场视觉。',
+  },
+  {
+    title: '唐风仕女裸眼 3D',
+    type: 'Naked-eye 3D',
+    category: 'screen',
+    video: videoPath('naked_eye_tang_lady.mp4'),
+    summary: '以东方人物、衣袂动态和空间透视营造柔和但有冲击力的出屏叙事。',
+    value: '适合文旅商业街区、节庆大屏和城市文化传播项目。',
+  },
+  {
+    title: '自然树景大屏视觉',
+    type: 'Naked-eye 3D',
+    category: 'screen',
+    video: videoPath('naked_eye_tree_scene.mp4'),
+    summary: '用自然生长感、空间层次和环境光影，让大屏内容从装饰背景变成沉浸场景。',
+    value: '适合商业空间氛围屏、生态主题展项和公共艺术视觉。',
+  },
+  {
+    title: '京东方超宽屏展厅视觉',
     type: 'Exhibition Visual',
     category: 'screen',
     video: videoPath('boe_exhibition_hall_2.mp4'),
-    summary: '同系列展厅大屏补充镜头，延续京东方项目的超宽屏视觉语言。',
+    summary: '面向企业展厅超宽屏场景的沉浸式视觉内容，强化科技空间氛围与大屏节奏。',
     value: '适合展示展厅项目的系列化交付、屏幕适配和稳定落地能力。',
   },
   {
@@ -223,12 +281,28 @@ const projects = [
     value: '适合概念预演、风格稿和客户沟通材料。',
   },
   {
-    title: 'AIGC 中世纪奇幻对决',
+    title: 'AIGC BMW 概念镜头',
     type: 'AIGC Motion',
     category: 'aigc',
-    video: videoPath('aigc_fantasy_duel.mp4'),
-    summary: '强调风格探索、画面张力和镜头节奏的 AI 概念片段。',
-    value: '适合展示 AIGC 视觉探索能力和叙事镜头感。',
+    video: videoPath('aigc_bmw_concept.mp4'),
+    summary: '用 AI 快速建立汽车概念画面的品牌气质、空间关系和镜头运动方向。',
+    value: '适合汽车广告提案、概念短片预演和前期风格验证。',
+  },
+  {
+    title: 'AIGC 糖果广告概念片',
+    type: 'AIGC Motion',
+    category: 'aigc',
+    video: videoPath('aigc_office_transformation.mp4'),
+    summary: '以日常办公场景切入，通过情绪反差、色彩转变和产品联想，快速搭建糖果广告片的创意方向。',
+    value: '适合食品品牌广告提案、情绪化短片预演和社媒传播概念验证。',
+  },
+  {
+    title: 'AIGC 文旅龙形开场',
+    type: 'AIGC Motion',
+    category: 'aigc',
+    video: videoPath('aigc_dragon_water_intro.mp4'),
+    summary: '以龙形意象、水幕冲击和地方文化符号建立强开场，强化文旅宣传片的记忆点与地域气质。',
+    value: '适合城市文旅宣传、景区推广片头、节庆活动开场和地方形象视觉提案。',
   },
 ];
 
@@ -272,17 +346,28 @@ const specialties = [
 
 function ProjectPreview({ poster, src, title, eager = false }) {
   const videoRef = useRef(null);
-  const [shouldLoad, setShouldLoad] = useState(eager);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
     const node = videoRef.current;
-    if (!node || eager) {
+    if (!node) {
+      return undefined;
+    }
+
+    if (eager && window.matchMedia('(min-width: 761px)').matches) {
+      setShouldLoad(true);
+      setHasLoaded(true);
       return undefined;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setShouldLoad(entry.isIntersecting);
+        const isVisible = entry.isIntersecting;
+        setShouldLoad(isVisible);
+        if (isVisible) {
+          setHasLoaded(true);
+        }
       },
       { rootMargin: '180px 0px', threshold: 0.12 },
     );
@@ -313,17 +398,20 @@ function ProjectPreview({ poster, src, title, eager = false }) {
       playsInline
       poster={poster}
       preload={eager ? 'auto' : 'none'}
-      src={shouldLoad ? src : undefined}
+      src={hasLoaded ? src : undefined}
     />
   );
 }
 
 function App() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const visibleProjects =
     activeFilter === 'all'
       ? projects
       : projects.filter((project) => project.category === activeFilter);
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <ClickSpark
@@ -336,8 +424,8 @@ function App() {
       sparkSize={13}
     >
       <div className="site-shell">
-        <header className="site-header">
-          <a className="brand" href="#top" aria-label="返回首页">
+        <header className={isMobileMenuOpen ? 'site-header is-menu-open' : 'site-header'}>
+          <a className="brand" href="#top" aria-label="返回首页" onClick={closeMobileMenu}>
             <span className="brand-mark">H</span>
             <span className="brand-copy">
               <strong>HAWEO</strong>
@@ -355,6 +443,22 @@ function App() {
             <Mail size={16} />
             <span>联系合作</span>
           </a>
+          <button
+            aria-expanded={isMobileMenuOpen}
+            aria-label={isMobileMenuOpen ? '关闭导航菜单' : '打开导航菜单'}
+            className="mobile-menu-toggle"
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
+            type="button"
+          >
+            {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+          <nav className="mobile-nav" aria-label="移动端导航">
+            {navItems.map((item) => (
+              <a key={item.href} href={item.href} onClick={closeMobileMenu}>
+                {item.label}
+              </a>
+            ))}
+          </nav>
         </header>
 
         <main id="top">
@@ -412,7 +516,6 @@ function App() {
             <div className="section-inner profile-grid">
               <div className="portrait-frame" aria-label="作品动态预览">
                 <ProjectPreview
-                  eager
                   poster={posterPath('portrait_motion.mp4')}
                   src={videoPath('portrait_motion.mp4')}
                   title="motion portrait"
