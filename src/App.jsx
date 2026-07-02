@@ -17,6 +17,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import BorderGlow from './BorderGlow.jsx';
 import ClickSpark from './ClickSpark.jsx';
+import DotField from './DotField.jsx';
 
 const navItems = [
   { label: '定位', href: '#profile' },
@@ -27,10 +28,10 @@ const navItems = [
 ];
 
 const metrics = [
-  { value: '10', suffix: '年', label: '商业视觉与三维动画经验' },
-  { value: '76+', suffix: '', label: '产品、展厅、大屏项目落地' },
+  { value: '10', suffix: '年', label: '商业三维视觉服务经验' },
+  { value: '76+', suffix: '', label: '产品、展厅与大屏项目经验' },
   { value: '14K', suffix: '', label: '超高分辨率展厅交付经验' },
-  { value: 'AI+3D', suffix: '', label: 'AIGC 提案与三维制作结合' },
+  { value: 'AI+3D', suffix: '', label: 'AIGC 概念预演与三维制作' },
 ];
 
 const projectFilters = [
@@ -53,10 +54,10 @@ const serviceTypes = [
 ];
 
 const projectStages = [
-  { step: '01', title: '需求拆解', text: '确认用途、受众、播放场景、规格、周期和预算，先把项目边界讲清楚。' },
-  { step: '02', title: '分镜与风格', text: '把产品卖点、镜头节奏、视觉参考和可实现路径整理成清晰方案。' },
-  { step: '03', title: '三维 / AIGC 制作', text: '完成资产整理、镜头动画、材质灯光、特效合成与必要的 AI 视觉探索。' },
-  { step: '04', title: '交付适配', text: '按官网、发布会、展厅、超宽屏或裸眼 3D 场景输出可直接使用的版本。' },
+  { step: '01', title: '需求拆解', text: '确认传播目标、受众、播放场景、规格、周期和预算，先形成清晰的制作边界。' },
+  { step: '02', title: '分镜与风格', text: '将产品卖点、镜头节奏、视觉参考和实现路径整理成可评估的创意方案。' },
+  { step: '03', title: '三维 / AIGC 制作', text: '根据确认方案完成资产整理、镜头动画、材质灯光、特效合成与必要的 AI 视觉预演。' },
+  { step: '04', title: '交付适配', text: '按官网、发布会、展厅、超宽屏或裸眼 3D 场景输出可直接投放与播放的版本。' },
 ];
 
 const caseStudies = [
@@ -65,7 +66,7 @@ const caseStudies = [
     tag: 'Product Launch',
     video: videoPath('product_gub_glasses.mp4'),
     challenge: '运动类产品需要在短时间里讲清结构、材质和科技感，不能只靠静态图。',
-    role: '负责三维资产整理、材质灯光、镜头动画、字幕包装与最终成片输出。',
+    role: '提供三维资产整理、材质灯光、镜头动画、字幕包装与最终成片输出。',
     outcome: '把产品卖点转化为 30 秒内可理解的视觉表达，适合电商、发布和品牌展示复用。',
   },
   {
@@ -73,7 +74,7 @@ const caseStudies = [
     tag: 'Exhibition Screen',
     video: videoPath('boe_exhibition_hall.mp4'),
     challenge: '京东方展厅项目需要在超宽屏比例里保持信息节奏、空间沉浸感和现场播放稳定性。',
-    role: '参与视觉资产、镜头运动、屏幕比例适配与高规格文件交付。',
+    role: '提供视觉资产制作、镜头运动设计、屏幕比例适配与高规格文件交付。',
     outcome: '让三维内容可以在展厅大屏里稳定播放，并服务企业空间展示的科技调性。',
   },
   {
@@ -81,7 +82,7 @@ const caseStudies = [
     tag: 'AI Concept',
     video: videoPath('aigc_bmw_concept.mp4'),
     challenge: '汽车概念提案需要快速呈现品牌气质、空间氛围和镜头冲击力，前期验证速度很关键。',
-    role: '使用 AIGC 生成汽车概念镜头，并结合剪辑节奏、画面调性和三维审美判断完成提案预演。',
+    role: '通过 AIGC 生成汽车概念镜头，并结合剪辑节奏、画面调性和三维审美判断完成提案预演。',
     outcome: '让客户在早期快速看见方向，降低试错成本，并为后续三维精制或广告分镜提供参考。',
   },
 ];
@@ -325,7 +326,7 @@ const specialties = [
     icon: Box,
     marker: '03 / Product Logic',
     title: '工业结构理解与产品表达',
-    detail: '机械设计背景让模型结构、运动逻辑和产品卖点拆解更扎实，能把复杂产品转成客户看得懂的影像。',
+    detail: '具备机械设计与产品结构理解基础，能将复杂结构、运动逻辑和产品卖点转化为清晰影像。',
     proof: '覆盖汽车、工业机械、科技硬件、骑行产品等需要结构说明与质感展示的方向。',
   },
   {
@@ -339,8 +340,8 @@ const specialties = [
     icon: CircuitBoard,
     marker: '05 / AI Workflow',
     title: 'AI 辅助提案与效率工作流',
-    detail: '把 Codex、Claude Code、ComfyUI 与 AIGC 视频流程纳入个人生产方式，用于网站、脚本、素材整理和概念镜头预演。',
-    proof: '本站由 Codex 辅助完成 React + Vite 搭建，并持续服务个人项目包装与视觉资产生产。',
+    detail: '将 AI 工具与三维制作流程结合，用于脚本梳理、素材整理、风格探索和概念镜头预演。',
+    proof: '可在项目前期更快形成方向参考，帮助客户降低沟通成本，并提升提案阶段的视觉确定性。',
   },
 ];
 
@@ -380,13 +381,19 @@ function ProjectPreview({ poster, src, title, eager = false }) {
     const node = videoRef.current;
     if (!node) return;
 
-    if (shouldLoad) {
+    const syncPlayback = () => {
+      if (!shouldLoad || document.hidden) {
+        node.pause();
+        return;
+      }
+
       const playPromise = node.play();
       if (playPromise?.catch) playPromise.catch(() => {});
-      return;
-    }
+    };
 
-    node.pause();
+    syncPlayback();
+    document.addEventListener('visibilitychange', syncPlayback);
+    return () => document.removeEventListener('visibilitychange', syncPlayback);
   }, [shouldLoad]);
 
   return (
@@ -424,6 +431,7 @@ function App() {
       sparkSize={13}
     >
       <div className="site-shell">
+        <DotField className="site-dot-field" />
         <header className={isMobileMenuOpen ? 'site-header is-menu-open' : 'site-header'}>
           <a className="brand" href="#top" aria-label="返回首页" onClick={closeMobileMenu}>
             <span className="brand-mark">H</span>
@@ -441,7 +449,7 @@ function App() {
           </nav>
           <a className="nav-contact" href="mailto:522369446@qq.com">
             <Mail size={16} />
-            <span>联系合作</span>
+            <span>项目咨询</span>
           </a>
           <button
             aria-expanded={isMobileMenuOpen}
@@ -505,7 +513,7 @@ function App() {
                 </div>
                 <div>
                   <span>Base</span>
-                  <strong>成都 · 远程协作 · 商业交付</strong>
+                  <strong>成都 · 远程协作 · 项目制交付</strong>
                 </div>
               </BorderGlow>
             </div>
@@ -527,11 +535,11 @@ function App() {
               </div>
 
               <div className="profile-content">
-                <p className="eyebrow">WHAT I SOLVE</p>
-                <h2>把复杂视觉项目，做成客户能理解、团队能推进、现场能播放的成片资产。</h2>
+                <p className="eyebrow">SERVICE POSITIONING</p>
+                <h2>为产品发布、展厅大屏与品牌提案，提供可理解、可推进、可播放的三维视觉内容。</h2>
                 <p className="section-copy">
-                  我不是只展示软件能力，而是把三维动画、工业结构理解、AIGC 概念预演、VFX 特效和屏幕交付经验组合起来，
-                  服务产品发布、展厅大屏、汽车工业、科技硬件和品牌提案等需要稳定落地的商业项目。
+                  服务覆盖三维动画、工业结构表达、AIGC 概念预演、VFX 特效与屏幕交付，
+                  适用于产品发布、展厅大屏、汽车工业、科技硬件和品牌提案等需要稳定落地的商业项目。
                 </p>
                 <div className="service-list">
                   {serviceTypes.map((item) => (
@@ -577,10 +585,10 @@ function App() {
               <div className="section-title-row">
                 <div>
                   <p className="eyebrow">ADVANTAGES</p>
-                  <h2>客户为什么可以把项目交给我</h2>
+                  <h2>为什么选择 HAWEO</h2>
                 </div>
                 <p>
-                  重点不是会多少软件，而是能不能把创意、技术、时间、素材和最终播放场景串成稳定交付。
+                  重点不只是制作画面，而是将创意方向、技术路径、项目周期、素材条件和最终播放场景整合成稳定交付。
                 </p>
               </div>
               <div className="specialty-grid">
@@ -615,10 +623,10 @@ function App() {
               <div className="section-title-row">
                 <div>
                   <p className="eyebrow">REPRESENTATIVE CASES</p>
-                  <h2>三个方向，看见交付价值</h2>
+                  <h2>三个方向，看见项目价值</h2>
                 </div>
                 <p>
-                  每个案例都不只展示画面，而是说明客户场景、我的角色和最终可以复用的商业价值。
+                  每个案例不只展示画面，也说明客户场景、服务内容和最终可复用的商业价值。
                 </p>
               </div>
 
@@ -641,11 +649,11 @@ function App() {
                           <dd>{caseItem.challenge}</dd>
                         </div>
                         <div>
-                          <dt>我的角色</dt>
+                          <dt>服务内容</dt>
                           <dd>{caseItem.role}</dd>
                         </div>
                         <div>
-                          <dt>交付价值</dt>
+                          <dt>项目价值</dt>
                           <dd>{caseItem.outcome}</dd>
                         </div>
                       </dl>
@@ -662,10 +670,10 @@ function App() {
               <div className="section-title-row">
                 <div>
                   <p className="eyebrow">SELECTED WORKS</p>
-                  <h2>精选项目</h2>
+                  <h2>精选作品</h2>
                 </div>
                 <p>
-                  卡片保留动态预览，同时补充每个作品适合解决的商业场景，方便客户快速判断匹配度。
+                  动态预览结合应用场景说明，方便根据项目类型快速判断风格、规格与匹配度。
                 </p>
               </div>
 
@@ -723,7 +731,7 @@ function App() {
                   <h2>合作流程更清楚，项目推进更顺</h2>
                 </div>
                 <p>
-                  适合从一个模糊想法开始，也适合已有脚本、产品资料或展厅规格后进入制作。
+                  既可以从初步想法开始梳理，也可以在已有脚本、产品资料或展厅规格后直接进入制作。
                 </p>
               </div>
               <div className="process-grid">
@@ -742,14 +750,14 @@ function App() {
             <p className="section-kicker" aria-hidden="true">CONTACT</p>
             <div className="contact-inner">
               <p className="eyebrow">CONTACT</p>
-              <h2>把下一个视觉项目，整理成可以落地的成片方案。</h2>
+              <h2>把下一个视觉项目，推进为可落地的成片方案。</h2>
               <p>
-                产品动画、三维短片、AIGC 分镜、裸眼 3D、大屏循环视觉或展厅项目，都可以先从素材、周期和播放场景聊起。
+                无论是产品动画、三维短片、AIGC 分镜、裸眼 3D、大屏循环视觉或展厅项目，都可以先从素材、周期和播放场景开始评估。
               </p>
               <div className="contact-actions">
                 <a className="button button-primary" href="mailto:522369446@qq.com">
                   <Mail size={18} />
-                  发送邮件
+                  发送项目需求
                 </a>
                 <a className="button button-ghost" href="tel:13084345226">
                   <Phone size={18} />
